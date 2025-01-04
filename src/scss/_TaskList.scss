@@ -1,0 +1,38 @@
+.task-list {
+}
+.block-input {
+  display: flex;
+  &__add {
+    padding: 0.6em 0.8em;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    flex-grow: 1;
+  }
+}
+.list {
+  margin-top: 1em;
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0px 0px 8px 0px;
+    &_change {
+      display: flex;
+      margin-bottom: 5px;
+      input {
+        padding: 0.6em 0.8em;
+        font-size: 1em;
+        border-radius: 5px;
+        border: 1px solid transparent;
+        flex-grow: 1;
+      }
+    }
+  }
+  &__buttons {
+    // margin-left: 10px;
+    display: flex;
+    justify-content: space-around;
+  }
+  // align-items: center;
+}
