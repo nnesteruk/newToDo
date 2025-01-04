@@ -1,5 +1,3 @@
-.task-list {
-}
 .block-input {
   display: flex;
   &__add {
@@ -30,9 +28,7 @@
     }
   }
   &__buttons {
-    // margin-left: 10px;
     display: flex;
     justify-content: space-around;
   }
-  // align-items: center;
 }
