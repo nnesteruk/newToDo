@@ -1,13 +1,9 @@
-import { useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './scss/App.scss';
 import { TaskList } from './components/TaskList';
-import { withLogger } from './components/HOC/withLogger';
 
 function App() {
-  const LogComponent = withLogger(TaskList);
-
   return (
     <>
       <div>
@@ -18,7 +14,7 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <LogComponent />
+      <TaskList />
     </>
   );
 }

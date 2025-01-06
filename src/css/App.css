@@ -31,7 +31,10 @@
 }
 .list__buttons {
   display: flex;
-  justify-content: space-around;
+  margin-left: 10px;
+}
+.list__buttons button:nth-child(2) {
+  margin-left: 10px;
 }
 
 #root {

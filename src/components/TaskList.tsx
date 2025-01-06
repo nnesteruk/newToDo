@@ -1,9 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { Task } from './Task';
 import { withLogger } from './HOC/withLogger';
 
-export const TaskList = () => {
-  const [list, setList] = useState([
+export type ItemList = {
+  id: number;
+  name: string;
+  isCompleted: boolean;
+};
+type List = ItemList[];
+export type UpdateTask = (
+  id: number,
+  newValue: string,
+  setChangeTask: React.Dispatch<React.SetStateAction<boolean>>,
+) => void;
+
+export type DeleteTask = (id: number) => void;
+export type IsCompletedTask = (id: number) => void;
+export const TaskList: React.FC = () => {
+  const [list, setList] = useState<List>([
     { id: 1, name: 'Сделать todo', isCompleted: false },
     { id: 2, name: 'покушать', isCompleted: false },
     { id: 3, name: 'сходить в зал', isCompleted: false },
@@ -12,10 +26,10 @@ export const TaskList = () => {
 
   const TaskWithHOC = withLogger(Task);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTask(e.target.value);
   };
-  const addTask = () => {
+  const addTask = (): void => {
     if (newTask.trim() === '') {
       alert('Введите название задачи!');
       return;
@@ -23,11 +37,11 @@ export const TaskList = () => {
     setList((prev) => [...prev, { id: Date.now(), name: newTask, isCompleted: false }]);
     setNewTask('');
   };
-  const deleteTask = (id) => {
+  const deleteTask: DeleteTask = (id) => {
     setList((prev) => [...prev].filter((item) => item.id !== id));
   };
 
-  const updateTask = (id, newValue, setChangeTask) => {
+  const updateTask: UpdateTask = (id, newValue, setChangeTask) => {
     if (newValue === '') {
       alert('Пожалуйста введите текст задачи!');
       return;
@@ -35,7 +49,7 @@ export const TaskList = () => {
     setList((prev) => prev.map((item) => (item.id === id ? { ...item, name: newValue } : item)));
     setChangeTask(false);
   };
-  const isCompletedTask = (id) => {
+  const isCompletedTask: IsCompletedTask = (id) => {
     setList((prev) =>
       prev.map((item) => (item.id === id ? { ...item, isCompleted: !item.isCompleted } : item)),
     );

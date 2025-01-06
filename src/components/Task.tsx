@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
+import { JSX, useState } from 'react';
+import { DeleteTask, IsCompletedTask, ItemList, UpdateTask } from './TaskList';
 
-export const Task = ({ item, deleteTask, updateTask, isCompletedTask }) => {
+type Props = {
+  item: ItemList;
+  deleteTask: DeleteTask;
+  updateTask: UpdateTask;
+  isCompletedTask: IsCompletedTask;
+};
+export const Task = ({ item, deleteTask, updateTask, isCompletedTask }: Props): JSX.Element => {
   const { id, name, isCompleted } = item;
   const [changeTask, setChangeTask] = useState(false);
   const [changeText, setChangeText] = useState('');
