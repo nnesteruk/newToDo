@@ -1,0 +1,13 @@
+.login-form {
+}
+.buttons {
+  display: flex;
+  flex-direction: column;
+  &__register {
+    &:hover,
+    &:not(:hover),
+    &:active {
+      border: none;
+    }
+  }
+}

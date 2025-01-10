@@ -1,4 +1,6 @@
 @use './_TaskList.scss';
+@use './Login.scss';
+@use './Registration.scss';
 
 #root {
   max-width: 1280px;
@@ -18,6 +20,12 @@
 }
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+.custom-label .ant-form-item-label > label {
+  color: white; /* Цвет текста */
+  font-size: 16px; /* Размер шрифта */
+  font-weight: bold; /* Жирный текст */
 }
 
 @keyframes logo-spin {

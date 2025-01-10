@@ -1,4 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
+import reactLogo from '../assets/react.svg';
+import viteLogo from '/vite.svg';
 import { Task } from './Task';
 import { withLogger } from './HOC/withLogger';
 
@@ -55,38 +57,48 @@ export const TaskList: React.FC = () => {
     );
   };
   return (
-    <div className="task-list">
-      <h1>Get things done!</h1>
-      <div className="block-input">
-        <input
-          placeholder="Какая задача на сегодня?"
-          onChange={handleChange}
-          value={newTask}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') addTask();
-          }}
-          className="block-input__add"
-        />
-        <button onClick={addTask} className="button-add">
-          Добавить
-        </button>
+    <>
+      <div>
+        <a href="https://vite.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
       </div>
-      <div className="list">
-        {list.length ? (
-          list.map((item) => (
-            <React.Fragment key={item.id}>
-              <TaskWithHOC
-                item={item}
-                deleteTask={deleteTask}
-                updateTask={updateTask}
-                isCompletedTask={isCompletedTask}
-              />
-            </React.Fragment>
-          ))
-        ) : (
-          <p>Add your first task!</p>
-        )}
+      <div className="task-list">
+        <h1>Get things done!</h1>
+        <div className="block-input">
+          <input
+            placeholder="Какая задача на сегодня?"
+            onChange={handleChange}
+            value={newTask}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') addTask();
+            }}
+            className="block-input__add"
+          />
+          <button onClick={addTask} className="button-add">
+            Добавить
+          </button>
+        </div>
+        <div className="list">
+          {list.length ? (
+            list.map((item) => (
+              <React.Fragment key={item.id}>
+                <TaskWithHOC
+                  item={item}
+                  deleteTask={deleteTask}
+                  updateTask={updateTask}
+                  isCompletedTask={isCompletedTask}
+                />
+              </React.Fragment>
+            ))
+          ) : (
+            <p>Add your first task!</p>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
