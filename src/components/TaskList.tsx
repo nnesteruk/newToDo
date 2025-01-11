@@ -1,13 +1,16 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 import reactLogo from '../assets/react.svg';
 import viteLogo from '/vite.svg';
 import { Task } from './Task';
 import { withLogger } from './HOC/withLogger';
+import axios from 'axios';
+import { useNavigate } from 'react-router';
 
 export type ItemList = {
   id: number;
-  name: string;
+  title: string;
   isCompleted: boolean;
+  user_id?: number;
 };
 type List = ItemList[];
 export type UpdateTask = (
@@ -19,42 +22,79 @@ export type UpdateTask = (
 export type DeleteTask = (id: number) => void;
 export type IsCompletedTask = (id: number) => void;
 export const TaskList: React.FC = () => {
-  const [list, setList] = useState<List>([
-    { id: 1, name: 'Сделать todo', isCompleted: false },
-    { id: 2, name: 'покушать', isCompleted: false },
-    { id: 3, name: 'сходить в зал', isCompleted: false },
-  ]);
+  const config = { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } };
+  const baseUrl = 'https://todo-redev.herokuapp.com';
+  const navigate = useNavigate();
+
+  const [list, setList] = useState<List>([]);
   const [newTask, setNewTask] = useState('');
+  const [trigger, setTrigger] = useState(0);
+
+  const getTasks = async () => {
+    try {
+      const { data } = await axios.get(`${baseUrl}/api/todos`, config);
+      setList([...data]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const TaskWithHOC = withLogger(Task);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTask(e.target.value);
   };
-  const addTask = (): void => {
+  const addTask = async (): Promise<void> => {
     if (newTask.trim() === '') {
       alert('Введите название задачи!');
       return;
     }
-    setList((prev) => [...prev, { id: Date.now(), name: newTask, isCompleted: false }]);
-    setNewTask('');
+    try {
+      await axios.post(`${baseUrl}/api/todos`, { title: newTask }, config);
+      setNewTask('');
+      setTrigger((prev) => prev + 1);
+    } catch (err) {
+      console.error(err);
+    }
   };
-  const deleteTask: DeleteTask = (id) => {
-    setList((prev) => [...prev].filter((item) => item.id !== id));
+  const deleteTask: DeleteTask = async (id) => {
+    try {
+      await axios.delete(`${baseUrl}/api/todos/${id}`, config);
+      setTrigger((prev) => prev + 1);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const updateTask: UpdateTask = (id, newValue, setChangeTask) => {
-    if (newValue === '') {
+  const updateTask: UpdateTask = async (id, title, setChangeTask) => {
+    if (title === '') {
       alert('Пожалуйста введите текст задачи!');
       return;
     }
-    setList((prev) => prev.map((item) => (item.id === id ? { ...item, name: newValue } : item)));
-    setChangeTask(false);
+    try {
+      await axios.patch(`${baseUrl}/api/todos/${id}`, { title: title }, config);
+      setChangeTask(false);
+      setTrigger((prev) => prev + 1);
+    } catch (err) {
+      console.error(err);
+    }
   };
-  const isCompletedTask: IsCompletedTask = (id) => {
-    setList((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, isCompleted: !item.isCompleted } : item)),
-    );
+  const isCompletedTask: IsCompletedTask = async (id) => {
+    try {
+      await axios.patch(`${baseUrl}/api/todos/${id}/isCompleted`, undefined, config);
+      setTrigger((prev) => prev + 1);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    getTasks();
+  }, [trigger]);
+
+  const handleClickExit = () => {
+    localStorage.removeItem('token');
+    navigate('/');
   };
   return (
     <>
@@ -98,6 +138,9 @@ export const TaskList: React.FC = () => {
             <p>Add your first task!</p>
           )}
         </div>
+        <a className="link__exit" onClick={handleClickExit}>
+          Выйти
+        </a>
       </div>
     </>
   );
