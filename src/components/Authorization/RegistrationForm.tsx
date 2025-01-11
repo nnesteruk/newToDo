@@ -1,6 +1,5 @@
 import { Button, Form, Input, Radio, Tooltip } from 'antd';
 import axios from 'axios';
-import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 

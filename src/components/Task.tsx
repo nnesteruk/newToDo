@@ -1,4 +1,4 @@
-import { JSX, useEffect, useState } from 'react';
+import { JSX, useState } from 'react';
 import { DeleteTask, IsCompletedTask, ItemList, UpdateTask } from './TaskList';
 
 type Props = {
