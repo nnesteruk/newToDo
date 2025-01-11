@@ -23,7 +23,7 @@ export const LoginForm: React.FC = () => {
       localStorage.setItem('token', token);
       navigate('/task-list');
     } catch (err: any) {
-      alert(err.message.data.message);
+      alert(err.response.data.message);
       console.log(err);
     }
   };
@@ -63,11 +63,11 @@ export const LoginForm: React.FC = () => {
             required: { value: true, message: 'Введите пароль' },
             pattern: {
               value: /^(?=.*[A-Z]).{8,}$/,
-              message: 'Пароль долежн содеражть минимум 8 символов',
+              message: 'Пароль не соответствует с подсказкой',
             },
           }}
           render={({ field }) => (
-            <Tooltip title="Пароль должен содержать минимум 8 символов и 1 заглавную букву">
+            <Tooltip title="Пароль должен содержать минимум 8 символов,1 букву, 1 цифру, 1 символ, 1 заглавную букву">
               <Input.Password {...field} placeholder="Password" />
             </Tooltip>
           )}

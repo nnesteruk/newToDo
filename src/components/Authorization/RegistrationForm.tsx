@@ -30,7 +30,8 @@ export const RegistrationForm = () => {
       console.log(value);
       alert('Регистрация прошла успешно');
       navigate('/');
-    } catch (err) {
+    } catch (err: any) {
+      alert(err.response.data.message);
       console.log(err);
     }
   };
@@ -57,7 +58,13 @@ export const RegistrationForm = () => {
         <Controller
           name="email"
           control={control}
-          rules={{ required: { value: true, message: 'Введите email' } }}
+          rules={{
+            required: { value: true, message: 'Введите email' },
+            pattern: {
+              value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
+              message: 'Введите корректный email',
+            },
+          }}
           render={({ field }) => <Input {...field} placeholder="nikita@yandex.ru" />}
         />
       </Form.Item>
@@ -71,7 +78,7 @@ export const RegistrationForm = () => {
           control={control}
           rules={{
             required: { value: true, message: 'Введите пароль' },
-            pattern: /^(?=.*[A-Z]).{8,}$/,
+            pattern: { value: /^(?=.*[A-Z]).{8,}$/, message: 'Пароль не соответствует подсказке' },
           }}
           render={({ field }) => (
             <Tooltip title="Минимум 8 символов и 1 заглавную букву,1 прописную, 1 символ, 1 цифру">
@@ -88,7 +95,7 @@ export const RegistrationForm = () => {
         <Controller
           name="gender"
           control={control}
-          rules={{ required: { value: true, message: 'Введите имя пользователя' } }}
+          rules={{ required: { value: true, message: 'Выберите пол' } }}
           render={({ field }) => (
             <Radio.Group {...field} className="radio">
               <Radio value="male" className="radio__item">
@@ -110,7 +117,7 @@ export const RegistrationForm = () => {
           name="age"
           control={control}
           rules={{
-            required: { value: true, message: 'Введите имя пользователя' },
+            required: { value: true, message: 'Введите возраст' },
             pattern: { value: /^[0-9]+$/, message: 'Возраст должен быть числом' },
             min: { value: 14, message: 'Возраст должен быть не менее 14 лет' },
             max: { value: 100, message: 'Возраст должен быть не более 100 лет' },

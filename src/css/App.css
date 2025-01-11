@@ -48,7 +48,9 @@
   display: flex;
   flex-direction: column;
 }
-.buttons__register:hover, .buttons__register:not(:hover), .buttons__register:active {
+.buttons__register:hover,
+.buttons__register:not(:hover),
+.buttons__register:active {
   border: none;
 }
 
