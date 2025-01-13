@@ -29,10 +29,10 @@ export const Task = ({ item, deleteTask, updateTask, isCompletedTask }: Props): 
             value={changeText}
             onChange={(e) => setChangeText(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') updateTask(id, changeText, setChangeTask);
+              if (e.key === 'Enter') updateTask(id, changeText);
             }}
           />
-          <button onClick={() => updateTask(id, changeText, setChangeTask)}>Изменить</button>
+          <button onClick={() => updateTask(id, changeText)}>Изменить</button>
         </div>
       ) : (
         <div className="list__item">

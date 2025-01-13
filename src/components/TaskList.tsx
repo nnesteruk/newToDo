@@ -3,41 +3,27 @@ import reactLogo from '../assets/react.svg';
 import viteLogo from '/vite.svg';
 import { Task } from './Task';
 import { withLogger } from './HOC/withLogger';
-import axios from 'axios';
 import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import {
+  axiosAddTask,
+  axiosDeleteTask,
+  axiosIsCompletedTask,
+  axiosUpdateTask,
+  axiosGetTasks,
+} from '../redux/actions/todoThunkActions';
+import { useAppSelector } from '../hooks/useAppSelector';
 
-export type ItemList = {
-  id: number;
-  title: string;
-  isCompleted: boolean;
-  user_id?: number;
-};
-type List = ItemList[];
-export type UpdateTask = (
-  id: number,
-  newValue: string,
-  setChangeTask: React.Dispatch<React.SetStateAction<boolean>>,
-) => void;
-
+export type UpdateTask = (id: number, newValue: string) => void;
 export type DeleteTask = (id: number) => void;
 export type IsCompletedTask = (id: number) => void;
+export const apiUrl = import.meta.env.VITE_API_URL;
 export const TaskList: React.FC = () => {
-  const config = { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } };
-  const baseUrl = 'https://todo-redev.herokuapp.com';
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const tasks = useAppSelector((state) => state.todoReducer.list);
 
-  const [list, setList] = useState<List>([]);
   const [newTask, setNewTask] = useState('');
-  const [trigger, setTrigger] = useState(0);
-
-  const getTasks = async () => {
-    try {
-      const { data } = await axios.get(`${baseUrl}/api/todos`, config);
-      setList([...data]);
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   const TaskWithHOC = withLogger(Task);
 
@@ -49,48 +35,28 @@ export const TaskList: React.FC = () => {
       alert('Введите название задачи!');
       return;
     }
-    try {
-      await axios.post(`${baseUrl}/api/todos`, { title: newTask }, config);
-      setNewTask('');
-      setTrigger((prev) => prev + 1);
-    } catch (err) {
-      console.error(err);
-    }
+    dispatch(axiosAddTask(newTask));
+    setNewTask('');
   };
   const deleteTask: DeleteTask = async (id) => {
-    try {
-      await axios.delete(`${baseUrl}/api/todos/${id}`, config);
-      setTrigger((prev) => prev + 1);
-    } catch (err) {
-      console.error(err);
-    }
+    dispatch(axiosDeleteTask(id));
   };
 
-  const updateTask: UpdateTask = async (id, title, setChangeTask) => {
+  const updateTask: UpdateTask = async (id, title) => {
     if (title === '') {
       alert('Пожалуйста введите текст задачи!');
       return;
     }
-    try {
-      await axios.patch(`${baseUrl}/api/todos/${id}`, { title: title }, config);
-      setChangeTask(false);
-      setTrigger((prev) => prev + 1);
-    } catch (err) {
-      console.error(err);
-    }
+    dispatch(axiosUpdateTask(id, title));
   };
+
   const isCompletedTask: IsCompletedTask = async (id) => {
-    try {
-      await axios.patch(`${baseUrl}/api/todos/${id}/isCompleted`, undefined, config);
-      setTrigger((prev) => prev + 1);
-    } catch (err) {
-      console.error(err);
-    }
+    dispatch(axiosIsCompletedTask(id));
   };
 
   useEffect(() => {
-    getTasks();
-  }, [trigger]);
+    dispatch(axiosGetTasks());
+  }, [dispatch]);
 
   const handleClickExit = () => {
     localStorage.removeItem('token');
@@ -123,8 +89,8 @@ export const TaskList: React.FC = () => {
           </button>
         </div>
         <div className="list">
-          {list.length ? (
-            list.map((item) => (
+          {tasks.length ? (
+            tasks.map((item) => (
               <React.Fragment key={item.id}>
                 <TaskWithHOC
                   item={item}
