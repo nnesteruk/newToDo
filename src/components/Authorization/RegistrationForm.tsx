@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
-type FormValues = {
+export type FormValues = {
   password: string;
   age: number;
   email: string;
@@ -22,17 +22,11 @@ export const RegistrationForm = () => {
   };
   const onSubmit = async (value: FormValues) => {
     try {
-      const response = await axios.post(
-        'https://todo-redev.herokuapp.com/api/users/register',
-        value,
-      );
-      console.log(response);
-      console.log(value);
+      await axios.post('https://todo-redev.herokuapp.com/api/users/register', value);
       alert('Регистрация прошла успешно');
       navigate('/');
     } catch (err: any) {
       alert(err.response.data.message);
-      console.log(err);
     }
   };
 
