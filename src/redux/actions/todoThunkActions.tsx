@@ -7,9 +7,10 @@ import {
   isCompletedTaskAction,
   updateTaskAction,
 } from './todoActions';
+import { Dispatch } from 'redux';
 
 export const axiosGetTasks = () => {
-  return async (dispatch) => {
+  return async (dispatch: Dispatch) => {
     try {
       const response = await axios.get(`${apiUrl}/api/todos`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -21,8 +22,8 @@ export const axiosGetTasks = () => {
   };
 };
 
-export const axiosAddTask = (name) => {
-  return async (dispatch) => {
+export const axiosAddTask = (name: string) => {
+  return async (dispatch: Dispatch) => {
     try {
       const response = await axios.post(
         `${apiUrl}/api/todos`,
@@ -38,8 +39,8 @@ export const axiosAddTask = (name) => {
   };
 };
 
-export const axiosDeleteTask = (id) => {
-  return async (dispatch) => {
+export const axiosDeleteTask = (id: number) => {
+  return async (dispatch: Dispatch) => {
     try {
       await axios.delete(`${apiUrl}/api/todos/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -51,8 +52,8 @@ export const axiosDeleteTask = (id) => {
   };
 };
 
-export const axiosIsCompletedTask = (id) => {
-  return async (dispatch) => {
+export const axiosIsCompletedTask = (id: number) => {
+  return async (dispatch: Dispatch) => {
     try {
       const response = await axios.patch(`${apiUrl}/api/todos/${id}/isCompleted`, undefined, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -64,8 +65,8 @@ export const axiosIsCompletedTask = (id) => {
     }
   };
 };
-export const axiosUpdateTask = (id, title) => {
-  return async (dispatch) => {
+export const axiosUpdateTask = (id: number, title: string) => {
+  return async (dispatch: Dispatch) => {
     try {
       const response = await axios.patch(
         `${apiUrl}/api/todos/${id}`,

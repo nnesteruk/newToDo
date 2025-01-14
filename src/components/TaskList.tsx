@@ -4,7 +4,6 @@ import viteLogo from '/vite.svg';
 import { Task } from './Task';
 import { withLogger } from './HOC/withLogger';
 import { useNavigate } from 'react-router';
-import { useDispatch } from 'react-redux';
 import {
   axiosAddTask,
   axiosDeleteTask,
@@ -12,7 +11,8 @@ import {
   axiosUpdateTask,
   axiosGetTasks,
 } from '../redux/actions/todoThunkActions';
-import { useAppSelector } from '../hooks/useAppSelector';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
+import { List } from '../redux/reducers/todoReducer';
 
 export type UpdateTask = (id: number, newValue: string) => void;
 export type DeleteTask = (id: number) => void;
@@ -20,8 +20,8 @@ export type IsCompletedTask = (id: number) => void;
 export const apiUrl = import.meta.env.VITE_API_URL;
 export const TaskList: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const tasks = useAppSelector((state) => state.todoReducer.list);
+  const dispatch = useAppDispatch();
+  const tasks: List[] = useAppSelector((state) => state.todoReducer.list);
 
   const [newTask, setNewTask] = useState('');
 

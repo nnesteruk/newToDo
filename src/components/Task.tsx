@@ -1,8 +1,9 @@
 import { JSX, useState } from 'react';
-import { DeleteTask, IsCompletedTask, ItemList, UpdateTask } from './TaskList';
+import { DeleteTask, IsCompletedTask, UpdateTask } from './TaskList';
+import { List } from '../redux/reducers/todoReducer';
 
 type Props = {
-  item: ItemList;
+  item: List;
   deleteTask: DeleteTask;
   updateTask: UpdateTask;
   isCompletedTask: IsCompletedTask;
