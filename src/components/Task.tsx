@@ -1,6 +1,6 @@
 import { JSX, useState } from 'react';
 import { DeleteTask, IsCompletedTask, UpdateTask } from './TaskList';
-import { List } from '../redux/reducers/todoReducer';
+import { List } from '../redux/slices/todoSlice';
 
 type Props = {
   item: List;
