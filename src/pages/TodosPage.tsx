@@ -1,6 +1,6 @@
 import reactLogo from '../assets/react.svg';
 import viteLogo from '/vite.svg';
-import { TaskList } from '../components/TaskList';
+import { TaskList } from '../components/TasList/TaskList';
 import { useNavigate } from 'react-router';
 export const TodosPage = () => {
   const navigate = useNavigate();

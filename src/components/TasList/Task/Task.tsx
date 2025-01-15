@@ -1,7 +1,7 @@
 import { JSX, useState } from 'react';
 
-import { List } from '../../redux/slices/todoSlice';
-import { DeleteTask, IsCompletedTask, UpdateTask } from '../TaskList.types';
+import { List } from '../../../redux/slices/todoSlice';
+import { DeleteTask, IsCompletedTask, UpdateTask } from '../../TasList/TaskList.types';
 import { TaskEdit } from './TaskEdit';
 import { TaskActions } from './TaskActions';
 

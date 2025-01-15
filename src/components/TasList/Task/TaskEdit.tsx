@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { UpdateTask } from '../TaskList.types';
+import { UpdateTask } from '../TasList/TaskList.types';
 type TaskEditProps = {
   updateTask: UpdateTask;
   title: string;

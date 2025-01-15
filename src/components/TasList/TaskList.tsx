@@ -1,14 +1,16 @@
 import React from 'react';
-import { Task } from './TasksComponents/Task';
-import { withLogger } from './HOC/withLogger';
+
+import { withLogger } from '../HOC/withLogger';
 import {
   useDeleteTodoMutation,
   useGetTodosQuery,
   useIsCompletedTodoMutation,
   useUpdateTodoMutation,
-} from '../redux/services/fetchTodoApi';
+} from '../../redux/services/fetchTodoApi';
 import { DeleteTask, IsCompletedTask, UpdateTask } from './TaskList.types';
-import { TaskInput } from './TasksComponents/TaskInput';
+import { Task } from './Task/Task';
+import { TaskInput } from './Task/TaskInput';
+
 export const TaskList: React.FC = () => {
   const { data: list, isLoading, error } = useGetTodosQuery();
 
