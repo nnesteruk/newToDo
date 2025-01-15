@@ -1,11 +1,6 @@
 import { FC, useState } from 'react';
-import { UpdateTask } from '../TasList/TaskList.types';
-type TaskEditProps = {
-  updateTask: UpdateTask;
-  title: string;
-  id: number;
-  onCancel: () => void;
-};
+import { TaskEditProps } from '../TaskList.types';
+
 export const TaskEdit: FC<TaskEditProps> = ({ updateTask, title, id, onCancel }) => {
   const [changeText, setChangeText] = useState(title);
 

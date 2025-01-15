@@ -6,19 +6,7 @@ import {
   fetchIsCompletedTask,
   fetchUpdateTask,
 } from '../reducers/todoThunkAction';
-
-export type List = {
-  id: number;
-  title: string;
-  isCompleted: boolean;
-  user_id: number;
-};
-
-type ListState = {
-  list: List[];
-  isLoading: boolean;
-  error: string;
-};
+import { List, ListState } from './todoSlice.types';
 
 const initialState: ListState = {
   list: [] as List[],

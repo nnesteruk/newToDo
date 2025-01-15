@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useState } from 'react';
-import { useAddTodoMutation } from '../../redux/services/fetchTodoApi';
+import { useAddTodoMutation } from '../../../redux/services/fetchTodoApi';
 
 export const TaskInput: FC = () => {
   const [addTodo, {}] = useAddTodoMutation();

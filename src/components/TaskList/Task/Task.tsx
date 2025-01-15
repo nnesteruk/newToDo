@@ -1,16 +1,9 @@
 import { JSX, useState } from 'react';
 
-import { List } from '../../../redux/slices/todoSlice';
-import { DeleteTask, IsCompletedTask, UpdateTask } from '../../TasList/TaskList.types';
+import { Props } from '../TaskList.types';
 import { TaskEdit } from './TaskEdit';
 import { TaskActions } from './TaskActions';
 
-type Props = {
-  item: List;
-  deleteTask: DeleteTask;
-  updateTask: UpdateTask;
-  isCompletedTask: IsCompletedTask;
-};
 export const Task = ({ item, deleteTask, updateTask, isCompletedTask }: Props): JSX.Element => {
   const { id, title, isCompleted } = item;
   const [changeTask, setChangeTask] = useState(false);

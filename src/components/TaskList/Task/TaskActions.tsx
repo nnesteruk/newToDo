@@ -1,9 +1,5 @@
 import { FC } from 'react';
-
-type TaskActionsProps = {
-  onChange: () => void;
-  onDelete: () => void;
-};
+import { TaskActionsProps } from '../TaskList.types';
 
 export const TaskActions: FC<TaskActionsProps> = ({ onChange, onDelete }) => {
   return (
