@@ -20,9 +20,11 @@ export const RegistrationForm = () => {
   const handleClickEnter = () => {
     navigate('/');
   };
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const onSubmit = async (value: FormValues) => {
     try {
-      await axios.post('https://todo-redev.herokuapp.com/api/users/register', value);
+      await axios.post(`${apiUrl}/api/users/register`, value);
       alert('Регистрация прошла успешно');
       navigate('/');
     } catch (err: any) {

@@ -15,13 +15,15 @@ export const LoginForm: React.FC = () => {
     formState: { errors },
   } = useForm<Defaults>();
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const onSubmit = async (data: Defaults) => {
     try {
-      const response = await axios.post(`https://todo-redev.herokuapp.com/api/auth/login`, data);
+      const response = await axios.post(`${apiUrl}/api/auth/login`, data);
       console.log(response);
       const { token } = response.data;
       localStorage.setItem('token', token);
-      navigate('/task-list');
+      navigate('/todosPage');
     } catch (err: any) {
       alert(err.response.data.message);
       console.log(err);
