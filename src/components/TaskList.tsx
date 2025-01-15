@@ -4,15 +4,14 @@ import viteLogo from '/vite.svg';
 import { Task } from './Task';
 import { withLogger } from './HOC/withLogger';
 import { useNavigate } from 'react-router';
-import {
-  axiosAddTask,
-  axiosDeleteTask,
-  axiosIsCompletedTask,
-  axiosUpdateTask,
-  axiosGetTasks,
-} from '../redux/actions/todoThunkActions';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { List } from '../redux/reducers/todoReducer';
+import {
+  fetchAddTask,
+  fetchDeleteTask,
+  fetchGetTodos,
+  fetchIsCompletedTask,
+  fetchUpdateTask,
+} from '../redux/reducers/todoThunkAction';
 
 export type UpdateTask = (id: number, newValue: string) => void;
 export type DeleteTask = (id: number) => void;
@@ -21,7 +20,7 @@ export const apiUrl = import.meta.env.VITE_API_URL;
 export const TaskList: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const tasks: List[] = useAppSelector((state) => state.todoReducer.list);
+  const { list, error, isLoading } = useAppSelector((state) => state.todo);
 
   const [newTask, setNewTask] = useState('');
 
@@ -35,11 +34,11 @@ export const TaskList: React.FC = () => {
       alert('Введите название задачи!');
       return;
     }
-    dispatch(axiosAddTask(newTask));
+    dispatch(fetchAddTask(newTask));
     setNewTask('');
   };
   const deleteTask: DeleteTask = async (id) => {
-    dispatch(axiosDeleteTask(id));
+    dispatch(fetchDeleteTask(id));
   };
 
   const updateTask: UpdateTask = async (id, title) => {
@@ -47,15 +46,15 @@ export const TaskList: React.FC = () => {
       alert('Пожалуйста введите текст задачи!');
       return;
     }
-    dispatch(axiosUpdateTask(id, title));
+    dispatch(fetchUpdateTask({ id, title }));
   };
 
   const isCompletedTask: IsCompletedTask = async (id) => {
-    dispatch(axiosIsCompletedTask(id));
+    dispatch(fetchIsCompletedTask(id));
   };
 
   useEffect(() => {
-    dispatch(axiosGetTasks());
+    dispatch(fetchGetTodos());
   }, [dispatch]);
 
   const handleClickExit = () => {
@@ -88,9 +87,10 @@ export const TaskList: React.FC = () => {
             Добавить
           </button>
         </div>
+        {}
         <div className="list">
-          {tasks.length ? (
-            tasks.map((item) => (
+          {list.length ? (
+            list.map((item) => (
               <React.Fragment key={item.id}>
                 <TaskWithHOC
                   item={item}
@@ -100,6 +100,10 @@ export const TaskList: React.FC = () => {
                 />
               </React.Fragment>
             ))
+          ) : isLoading ? (
+            <h2>Идет загрузка...</h2>
+          ) : error ? (
+            <h2>{error}</h2>
           ) : (
             <p>Add your first task!</p>
           )}

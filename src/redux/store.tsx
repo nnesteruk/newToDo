@@ -1,22 +1,13 @@
-import {
-  AnyAction,
-  applyMiddleware,
-  combineReducers,
-  legacy_createStore as createStore,
-} from 'redux';
-import todoReducer from './reducers/todoReducer';
-import { composeWithDevTools } from '@redux-devtools/extension';
-import { thunk, ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { configureStore } from '@reduxjs/toolkit';
+import todosReducer from './slices/todoSlice';
 
-const rootReducer = combineReducers({
-  todoReducer,
+const store = configureStore({
+  reducer: {
+    todo: todosReducer,
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(),
+  devTools: process.env.NODE_ENV !== 'production',
 });
-
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
-
-export type RootReducerType = ReturnType<typeof rootReducer>;
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = ThunkDispatch<RootState, unknown, AnyAction>;
-export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AnyAction>;
-
+export type AppDispatch = typeof store.dispatch;
 export default store;

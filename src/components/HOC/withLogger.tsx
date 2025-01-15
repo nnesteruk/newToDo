@@ -20,9 +20,9 @@ export const withLogger = <T extends Props>(WrappedComponent: React.ComponentTyp
         logAction('Delete Task', { id });
         props.deleteTask(id);
       },
-      updateTask: (id, newValue, setChangeText) => {
+      updateTask: (id, newValue) => {
         logAction('Update Task', { id, newValue });
-        props.updateTask(id, newValue, setChangeText);
+        props.updateTask(id, newValue);
       },
       isCompletedTask: (id) => {
         logAction('Completed Task', { id });
