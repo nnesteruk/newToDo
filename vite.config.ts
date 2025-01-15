@@ -9,7 +9,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom'],
+          react: ['react', 'react-dom'],
+          vendor: ['axios'],
         },
       },
     },

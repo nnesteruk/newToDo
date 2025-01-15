@@ -1,17 +1,9 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import reactLogo from '../assets/react.svg';
 import viteLogo from '/vite.svg';
 import { Task } from './Task';
 import { withLogger } from './HOC/withLogger';
 import { useNavigate } from 'react-router';
-import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import {
-  fetchAddTask,
-  fetchDeleteTask,
-  fetchGetTodos,
-  fetchIsCompletedTask,
-  fetchUpdateTask,
-} from '../redux/reducers/todoThunkAction';
 import {
   useAddTodoMutation,
   useDeleteTodoMutation,
@@ -19,15 +11,11 @@ import {
   useIsCompletedTodoMutation,
   useUpdateTodoMutation,
 } from '../redux/services/fetchTodoApi';
+import { DeleteTask, IsCompletedTask, UpdateTask } from './TaskList.types';
 
-export type UpdateTask = (id: number, newValue: string) => void;
-export type DeleteTask = (id: number) => void;
-export type IsCompletedTask = (id: number) => void;
 export const apiUrl = import.meta.env.VITE_API_URL;
 export const TaskList: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  // const { list, error, isLoading } = useAppSelector((state) => state.todo);
   const { data: list, isLoading, error } = useGetTodosQuery();
   const [addTodo, {}] = useAddTodoMutation();
   const [updateTodo, {}] = useUpdateTodoMutation();
@@ -66,6 +54,7 @@ export const TaskList: React.FC = () => {
 
   const isCompletedTask: IsCompletedTask = async (id) => {
     // dispatch(fetchIsCompletedTask(id));
+
     isCompletedTodo(id);
   };
 
@@ -75,6 +64,7 @@ export const TaskList: React.FC = () => {
 
   const handleClickExit = () => {
     localStorage.removeItem('token');
+    alert('Вы вышли из системы');
     navigate('/');
   };
   return (
@@ -107,19 +97,20 @@ export const TaskList: React.FC = () => {
         <div className="list">
           {list?.length ? (
             list.map((item) => (
-              <React.Fragment key={item.id}>
-                <TaskWithHOC
-                  item={item}
-                  deleteTask={deleteTask}
-                  updateTask={updateTask}
-                  isCompletedTask={isCompletedTask}
-                />
-              </React.Fragment>
+              <TaskWithHOC
+                item={item}
+                key={item.id}
+                deleteTask={deleteTask}
+                updateTask={updateTask}
+                isCompletedTask={isCompletedTask}
+              />
             ))
           ) : isLoading ? (
             <h2>Идет загрузка...</h2>
+          ) : error ? (
+            <h2>Произошла ошибка при загрузке</h2>
           ) : (
-            <p>Add your first task!</p>
+            <p>Список задач пуст</p>
           )}
         </div>
         <a className="link__exit" onClick={handleClickExit}>
