@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { createAppAsyncThunk } from '../../hooks/hooks';
-import { List } from '../slices/todoSlice';
+import { List } from '../slices/todoSlice.types';
 
 const apiUrl: string = import.meta.env.VITE_API_URL;
 export const instance = axios.create({

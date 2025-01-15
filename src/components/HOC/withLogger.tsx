@@ -1,5 +1,5 @@
 import React from 'react';
-import { DeleteTask, IsCompletedTask, UpdateTask } from '../TaskList/TaskList';
+import { DeleteTask, IsCompletedTask, UpdateTask } from '../TaskList/TaskList.types';
 
 type Props = {
   [key: string]: any;

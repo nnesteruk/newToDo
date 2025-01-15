@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { List } from '../slices/todoSlice';
+import { List } from '../slices/todoSlice.types';
 
 const apiUrl: string = import.meta.env.VITE_API_URL;
 export const fetchTodoApi = createApi({
