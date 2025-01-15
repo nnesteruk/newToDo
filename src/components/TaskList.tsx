@@ -12,6 +12,13 @@ import {
   fetchIsCompletedTask,
   fetchUpdateTask,
 } from '../redux/reducers/todoThunkAction';
+import {
+  useAddTodoMutation,
+  useDeleteTodoMutation,
+  useGetTodosQuery,
+  useIsCompletedTodoMutation,
+  useUpdateTodoMutation,
+} from '../redux/services/fetchTodoApi';
 
 export type UpdateTask = (id: number, newValue: string) => void;
 export type DeleteTask = (id: number) => void;
@@ -20,7 +27,12 @@ export const apiUrl = import.meta.env.VITE_API_URL;
 export const TaskList: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { list, error, isLoading } = useAppSelector((state) => state.todo);
+  // const { list, error, isLoading } = useAppSelector((state) => state.todo);
+  const { data: list, isLoading, error } = useGetTodosQuery();
+  const [addTodo, {}] = useAddTodoMutation();
+  const [updateTodo, {}] = useUpdateTodoMutation();
+  const [deleteTodo, {}] = useDeleteTodoMutation();
+  const [isCompletedTodo, {}] = useIsCompletedTodoMutation();
 
   const [newTask, setNewTask] = useState('');
 
@@ -34,11 +46,13 @@ export const TaskList: React.FC = () => {
       alert('Введите название задачи!');
       return;
     }
-    dispatch(fetchAddTask(newTask));
+    // dispatch(fetchAddTask(newTask));
+    addTodo(newTask);
     setNewTask('');
   };
   const deleteTask: DeleteTask = async (id) => {
-    dispatch(fetchDeleteTask(id));
+    // dispatch(fetchDeleteTask(id));
+    deleteTodo(id);
   };
 
   const updateTask: UpdateTask = async (id, title) => {
@@ -46,16 +60,18 @@ export const TaskList: React.FC = () => {
       alert('Пожалуйста введите текст задачи!');
       return;
     }
-    dispatch(fetchUpdateTask({ id, title }));
+    // dispatch(fetchUpdateTask({ id, title }));
+    updateTodo({ id, title });
   };
 
   const isCompletedTask: IsCompletedTask = async (id) => {
-    dispatch(fetchIsCompletedTask(id));
+    // dispatch(fetchIsCompletedTask(id));
+    isCompletedTodo(id);
   };
 
-  useEffect(() => {
-    dispatch(fetchGetTodos());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchGetTodos());
+  // }, [dispatch]);
 
   const handleClickExit = () => {
     localStorage.removeItem('token');
@@ -89,7 +105,7 @@ export const TaskList: React.FC = () => {
         </div>
         {}
         <div className="list">
-          {list.length ? (
+          {list?.length ? (
             list.map((item) => (
               <React.Fragment key={item.id}>
                 <TaskWithHOC
@@ -102,8 +118,6 @@ export const TaskList: React.FC = () => {
             ))
           ) : isLoading ? (
             <h2>Идет загрузка...</h2>
-          ) : error ? (
-            <h2>{error}</h2>
           ) : (
             <p>Add your first task!</p>
           )}
